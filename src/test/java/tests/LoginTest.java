@@ -1,19 +1,39 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import user.UserFactory;
+import utils.AllureUtils;
 
 import static org.testng.Assert.*;
+import static utils.AllureUtils.takeScreenshot;
 
 public class LoginTest extends BaseTest {
-
-    @Test(enabled = true)
+    @Epic("Модуль логина интернет-магазина")
+    @Feature("Юридические лица")
+    @Story("STG")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Marina Lozhkina lozhkina.marina86@gmail.com")
+    @TmsLink("blabla")
+    @Flaky
+    @Issue("2")
+    @Test(description = "Проверка авторизации")
     public void correctLogin() {
         loginPage.open();
-        loginPage.login(user, password);
+        loginPage.login(UserFactory.withAdminPermission());
 
         assertTrue(productsPage.titleIsDisplayed());
+        takeScreenshot(driver);
         assertEquals(productsPage.getTitle(), "Products");
+
+        productsPage.isOpen();
+        productsPage.addToCart(1);
+        productsPage.addToCart(3);
+        productsPage.openCart();
+        assertTrue(cartPage.getProductsNames().contains("Sauce Labs Onesie"));
+        assertEquals(cartPage.getProductsNames().size(), 2);
+        assertFalse(cartPage.getProductsNames().isEmpty());
     }
 
     @DataProvider(name = "incorrectLoginData")
@@ -25,10 +45,12 @@ public class LoginTest extends BaseTest {
         };
     }
 
-       @Test(dataProvider =  "incorrectLoginData")
-        public void incorrectLogin(String user, String pass, String errorMsg) {
+    @Test(dataProvider =  "incorrectLoginData")
+    public void incorrectLogin(String user, String pass, String errorMsg) {
         loginPage.open();
-        loginPage.login(user, pass);
+        loginPage.fillLoginInput(user);
+        loginPage.fillPasswordInput(pass);
+        loginPage.clickSubmitBtn();
         assertEquals(loginPage.getErrorMsg(), errorMsg);
        }
 }

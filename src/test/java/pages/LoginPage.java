@@ -1,7 +1,9 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import user.User;
 
 public class LoginPage extends BasePage{
     private static final By USERNAME_INPUT = By.id("user-name");
@@ -13,13 +15,15 @@ public class LoginPage extends BasePage{
         super(driver);
     }
 
+    @Step("Открытие браузера")
     public void open() {
         driver.get(BASE_URL);
     }
 
-    public void login(String user, String password) {
-        fillLoginInput(user);
-        fillPasswordInput(password);
+    @Step("Вводим данные пользователя")
+    public void login(User user) {
+        fillLoginInput(user.getEmail());
+        fillPasswordInput(user.getPassword());
         clickSubmitBtn();
     }
 
