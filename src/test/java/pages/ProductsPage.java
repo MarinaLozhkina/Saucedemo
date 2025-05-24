@@ -13,37 +13,41 @@ public class ProductsPage extends BasePage {
     private static final String ADD_TO_CART_BUTTON_PATTERN
             = "//div[text()='%s']//ancestor::div[@class='inventory_item']//button";
 
-
-
     public ProductsPage(WebDriver driver) {
         super(driver);
     }
 
     @Step("Проверяем название товара")
-    public String getTitle() { return driver.findElement(title).getText();
+    public String getTitle() {
+        return driver.findElement(title).getText();
     }
 
     @Step("Проверяем, что отображен заголовок страницы")
-    public boolean titleIsDisplayed() { return driver.findElement(title2).isDisplayed();
-       }
+    public boolean titleIsDisplayed() {
+        return driver.findElement(title2).isDisplayed();
+    }
 
-    public void addToCart(String goodsName) {
+    public ProductsPage addToCart(String goodsName) {
         By addToCart = By.xpath(String.format(ADD_TO_CART_BUTTON_PATTERN, goodsName));
         driver.findElement(addToCart).click();
+        return this;
     }
 
     @Step("Добавление товара в корзину")
-    public void addToCart(int index) {
+    public ProductsPage addToCart(int index) {
         driver.findElements(addToCartButton).get(index).click();
+        return this;
     }
 
     @Step("Ожидаем прогрузки карточек товаров")
-    public void isOpen() {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(addToCartButton));
-        }
+    public ProductsPage isOpen() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(addToCartButton));
+        return this;
+    }
 
     @Step("Открытие корзины")
-    public void openCart() {
+    public ProductsPage openCart() {
         driver.findElement(shoppingCartLink).click();
+        return this;
     }
 }

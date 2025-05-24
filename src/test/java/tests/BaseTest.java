@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 @Listeners(TestListener.class)
 public class BaseTest {
-    WebDriver driver;
-    LoginPage  loginPage;
+    public WebDriver driver;
+    LoginPage loginPage;
     ProductsPage productsPage;
     CartPage cartPage;
     String user;
@@ -39,6 +39,7 @@ public class BaseTest {
             WebDriverManager.edgedriver().setup();
             driver = new EdgeDriver();
         }
+
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         context.setAttribute("driver", driver);
         loginPage = new LoginPage(driver);
@@ -53,6 +54,6 @@ public class BaseTest {
     @Step("Закрытие")
     @AfterMethod
     public void close() {
-        //driver.quit();
+        driver.quit();
     }
 }
