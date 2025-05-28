@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends BasePage {
+    private final By productsNamesLocator = By.cssSelector(".inventory_item_name");
+
     public CartPage(WebDriver driver) {
         super(driver);
     }
 
     public ArrayList<String> getProductsNames() {
-        List<WebElement> allProductsNames = driver.findElements(By.cssSelector(".inventory_item_name"));
+        List<WebElement> allProductsNames = driver.findElements(productsNamesLocator);
         ArrayList<String> names = new ArrayList<>();
         for (WebElement product : allProductsNames) {
             names.add(product.getText());
